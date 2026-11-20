@@ -1,0 +1,36 @@
+name: Build APK (Android 12)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Android SDK packages
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;34.0.0" "platforms;android-34"
+
+      - name: Lower minimum Android version to 12 (API 31)
+        run: |
+          sed -i 's/--min-sdk-version 34/--min-sdk-version 31/; s/--min-api 34/--min-api 31/' build.sh
+          grep -n -e "--min-sdk-version" -e "--min-api" build.sh
+
+      - name: Build
+        run: bash build.sh
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: arc-volume-android12
+          path: build/*.apk
