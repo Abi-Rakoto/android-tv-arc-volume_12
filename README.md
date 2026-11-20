@@ -23,7 +23,7 @@ as a number right under the TV's own volume panel, and hides it together with th
 
 ## Installation
 
-ARC Volume needs Android 14 or newer. It was built and tested on a TCL 55C7K with a Sony HT-S350
+ARC Volume needs Android 12 or newer. It was built and tested on a TCL 55C7K with a Sony HT-S350
 soundbar.
 
 1. Download `arc-volume-<version>.apk` from the
